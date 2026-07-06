@@ -3,11 +3,15 @@ POST http://localhost:3000/campaigns
 {
     "name": "change",
     "content": "chage password",
-    "emails": ["luis@teste.com.br"]
+    "emails": ["jo@teste.com", "paula@gmail.com", "lucas@gmail.com"]
 }
 
 ###
-GET http://localhost:3000/campaigns/
+
+GET http://localhost:3000/campaigns/d960sc5lv9v1ktid52f0
+
+###
+PATCH http://localhost:3000/campaigns/cancel/d960sc5lv9v1ktid52f0
 
 ### 
-PATCH http://localhost:3000/campaigns/cancel
+DELETE http://localhost:3000/campaigns/delete/d960sc5lv9v1ktid52f0

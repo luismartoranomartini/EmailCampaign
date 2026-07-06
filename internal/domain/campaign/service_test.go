@@ -33,6 +33,16 @@ func (r *repositoryMock) GetBy(id string) (*Campaign, error) {
 	return args.Get(0).(*Campaign), args.Error(1)
 }
 
+func (r *repositoryMock) Update(campaign *Campaign) error {
+	args := r.Called(campaign)
+	return args.Error(0)
+}
+
+func (r *repositoryMock) Delete(campaign *Campaign) error {
+	args := r.Called(campaign)
+	return args.Error(0)
+}
+
 var (
 	newCampaign = contract.NewCampaign{
 		Name:    "Test Y",

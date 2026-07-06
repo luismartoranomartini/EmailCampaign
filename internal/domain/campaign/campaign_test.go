@@ -49,7 +49,7 @@ func Test_NewCampaign_StatusStarted(t *testing.T) {
 
 	campaign, _ := NewCampaign(name, content, contacts)
 
-	campaign.Start()
+	campaign.Create()
 
 	assert.Equal(Started, campaign.Status)
 }

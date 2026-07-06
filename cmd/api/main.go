@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"projeto-golang/internal/domain/campaign"
@@ -31,7 +32,9 @@ func main() {
 	// handler.CampaingService = campaingService
 	route.Post("/campaigns", endpoints.HandlerError(handler.CampaignPost))
 	route.Get("/campaigns/{id}", endpoints.HandlerError(handler.CampaignGetByID))
-	route.Get("/campaigns/cancel/{id}", endpoints.HandlerError(handler.CampaignCancelPatch))
+	route.Patch("/campaigns/cancel/{id}", endpoints.HandlerError(handler.CampaignCancelPatch))
+	route.Delete("/campaigns/delete/{id}", endpoints.HandlerError(handler.CampaignDelete))
 
+	fmt.Println("Conexão estabelecida com sucesso")
 	log.Fatal(http.ListenAndServe(PORT, route))
 }
