@@ -33,6 +33,7 @@ func main() {
 	route.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("pong"))
 	})
+	// Agrupamento de routes
 	route.Route("/campaigns", func(r chi.Router) {
 		r.Use(endpoints.Auth)
 		r.Post("/", endpoints.HandlerError(handler.CampaignPost))

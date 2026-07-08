@@ -1,8 +1,8 @@
 ###
-GET http://localhost:3000/campaigns/ping
+GET http://localhost:3000/ping
 
 ###
-DELETE http://localhost:3000/campaigns/delete/d976qpdlv9v6kvjcdhk0
+DELETE http://localhost:3000/delete/d976qpdlv9v6kvjcdhk0
 
 ### GET_TOKEN
 POST http://localhost:8080/realms/provider/protocol/openid-connect/token
