@@ -30,12 +30,13 @@ func main() {
 		CampaignService: &campaingService,
 	}
 	// handler.CampaingService = campaingService
-	route.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("pong"))
-	})
 	// Agrupamento de routes
 	route.Route("/campaigns", func(r chi.Router) {
 		r.Use(endpoints.Auth)
+		route.Get("/ping", func(w http.ResponseWriter, r *http.Request) {
+			w.Write([]byte("pong"))
+		})
+
 		r.Post("/", endpoints.HandlerError(handler.CampaignPost))
 		r.Get("/{id}", endpoints.HandlerError(handler.CampaignGetByID))
 		r.Delete("/delete/{id}", endpoints.HandlerError(handler.CampaignDelete))

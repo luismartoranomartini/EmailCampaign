@@ -1,11 +1,14 @@
-###
-GET http://localhost:3000/ping
+@base_url = http://127.0.0.1:3000 
+@auth_url = http://127.0.0.1:8080
 
-###
-DELETE http://localhost:3000/delete/d976qpdlv9v6kvjcdhk0
+### PING 
+GET {{base_url}}/ping
+
+### DELETE CAMPAIGN 
+DELETE {{url}}/delete/d976qpdlv9v6kvjcdhk0
 
 ### GET_TOKEN
-POST http://localhost:8080/realms/provider/protocol/openid-connect/token
+POST {{auth_url}}/realms/provider/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 client_id=emailcampaign&client_secret=suv0pl09TPTD0vYk1hyXyOZoZIeJkKaw&username=agenciamartinidigital@gmail.com&password=123456&grant_type=password
@@ -14,8 +17,8 @@ client_id=emailcampaign&client_secret=suv0pl09TPTD0vYk1hyXyOZoZIeJkKaw&username=
     client.global.set("access_token", response.body.access_token);
 %}
 
-###
-POST http://localhost:3000/campaigns
+### CREATE_CAMPAIGN
+POST {{base_urlrl}}/campaigns
 Authorization: Bearer {{access_token}}
 Content-Type: application/json
 
