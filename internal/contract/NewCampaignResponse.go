@@ -6,4 +6,5 @@ type CampaignRespose struct {
 	Content           string
 	Status            string
 	AmoutEmailsToSend int
+	CreatedBy         string
 }

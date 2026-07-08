@@ -1,22 +1,28 @@
 package endpoints
 
 import (
+	"context"
 	"net/http"
 	"strings"
 
 	oidc "github.com/coreos/go-oidc/v3/oidc"
+	jwtgo "github.com/dgrijalva/jwt-go"
 	"github.com/go-chi/render"
 )
 
+type contextKey string
+
+const emailKey contextKey = "email"
+
 func Auth(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("Authorization")
-		if token == "" {
+		tokenString := r.Header.Get("Authorization")
+		if tokenString == "" {
 			render.Status(r, 401)
 			render.JSON(w, r, map[string]string{"error": "request not contain an authorization header"})
 			return
 		}
-		token = strings.Replace(token, "Bearer ", "", 1)
+		tokenString = strings.Replace(tokenString, "Bearer ", "", 1)
 		provider, err := oidc.NewProvider(r.Context(), "http://localhost:8080/realms/provider")
 		if err != nil {
 			render.Status(r, 500)
@@ -25,12 +31,19 @@ func Auth(next http.Handler) http.Handler {
 		}
 
 		verifier := provider.Verifier(&oidc.Config{ClientID: "emailcampaign"})
-		_, err = verifier.Verify(r.Context(), token)
+		_, err = verifier.Verify(r.Context(), tokenString)
 		if err != nil {
 			render.Status(r, 401)
 			render.JSON(w, r, map[string]string{"error": "invalid token"})
+			return
 		}
 
-		next.ServeHTTP(w, r)
+		token, _ := jwtgo.Parse(tokenString, nil)
+		claims := token.Claims.(jwtgo.MapClaims)
+		email := claims["email"]
+
+		ctx := context.WithValue(r.Context(), emailKey, email)
+
+		next.ServeHTTP(w, r.WithContext(ctx))
 	})
 }

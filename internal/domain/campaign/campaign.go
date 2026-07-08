@@ -29,9 +29,10 @@ type Campaign struct {
 	Content   string    `validate:"min=5,max=1024" gorm:"size:1024"`
 	Contacts  []Contact `validate:"min=1,dive"`
 	Status    string    `gorm:"size:20"`
+	Createdby string    `validate:"email" gorm:"size:50"`
 }
 
-func NewCampaign(name, content string, emails []string) (*Campaign, error) {
+func NewCampaign(name, content string, emails []string, createdby string) (*Campaign, error) {
 	if emails == nil {
 		return nil, errors.New("contacts is required with min 1")
 	}
@@ -52,6 +53,7 @@ func NewCampaign(name, content string, emails []string) (*Campaign, error) {
 		CreatedOn: time.Now(), // não pode ser nil
 		Contacts:  contacts,
 		Status:    Pending,
+		Createdby: createdby,
 	}
 
 	err := internalerrors.ValidateStruct(campaign)
