@@ -9,7 +9,10 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "cmd/api/main.go"
+            "program": "cmd/api/main.go",
+            "env":{
+                "DATABASE": "local_x"
+            }
         }
     ]
 }
