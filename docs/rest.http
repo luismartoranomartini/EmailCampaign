@@ -1,46 +1,46 @@
 @base_url = http://localhost:3000
 @auth_url = http://localhost:8080
+@campaign_id = {{campaign_create.response.body.id}}
 
-### PING
-GET {{base_url}}/ping
-
-### GET 
-GET {{base_url}}/campaigns
-Authorization: Bearer {{access_token}}
-
-
-### DELETE CAMPAIGN
-DELETE {{base_url}}/delete/
-Authorization: Bearer {{access_token}}
-
-
-###
-PATCH {{base_url}}/campaigns/cancel
-Authorization: Bearer {{access_token}}
-
-
-### GET_TOKEN
+### GET_TOKEN 
+# @name token 
 POST {{auth_url}}/realms/provider/protocol/openid-connect/token
 Content-Type: application/x-www-form-urlencoded
 
 client_id=emailcampaign&client_secret=suv0pl09TPTD0vYk1hyXyOZoZIeJkKaw&username=agenciamartinidigital@gmail.com&password=123456&grant_type=password
-
 > {%
     client.global.set("access_token", response.body.access_token);
 %}
 
-### CREATE_CAMPAIGN
-# @name token 
-POST {{base_url}}/campaigns
+### CREATE_CAMPAIGN 
+# @name campaign_create
+POST {{base_url}}/campaigns/
 Authorization: Bearer {{access_token}}
-Content-Type: application/json
+Content-Type: application/json 
 
 {
     "Name": "change",
     "Content": "change password",
-    "emails": ["luis@teste.com", "jo@teste.com"],
+    "emails": ["luis@teste.com", "jo@teste.com", "adele@teste.com", "agenciamartinidigital@gmail.com"],
     "createdBy": "luis@teste.com"
 }
+> {%
+    client.global.set("campaign_id", response.body.id);
+%}
+
+
+### PING 
+GET {{base_url}}/ping 
+
+### GET
+GET {{base_url}}/campaigns/{{campaign_id}}
+Authorization: Bearer {{access_token}}
+
+### DELETE_CAMPAIGN 
+DELETE {{base_url}}/campaigns/delete/{{campaign_id}}
+Authorization: Bearer {{access_token}}
 
 ### 
-@access_token = {{token.response.body.access_token}}
+PATCH {{base_url}}/campaigns/start/{{campaign_id}}
+Authorization: Bearer {{access_token}}
+
