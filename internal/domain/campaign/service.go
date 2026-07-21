@@ -112,21 +112,23 @@ func (s *ServiceImp) SaveEmailAndUpdatedStatus(campaignSaved *Campaign) error {
 	return err
 }
 
+func (s *ServiceImp) SendMailAndUpdateStatus(campaignSaved *Campaign) {
+	err := s.SendMail(campaignSaved)
+	if err != nil {
+		campaignSaved.Fail()
+	} else {
+		campaignSaved.Done()
+	}
+	s.Repository.Update(campaignSaved)
+}
+
 func (s *ServiceImp) Start(id string) error {
 	campaignSaved, err := s.GetAndValidateStatusIsPending(id)
 	if err != nil {
 		return err
 	}
 
-	go func() {
-		err = s.SendMail(campaignSaved)
-		if err != nil {
-			campaignSaved.Fail()
-		} else {
-			campaignSaved.Done()
-		}
-		s.Repository.Update(campaignSaved)
-	}()
+	go s.SendMailAndUpdateStatus(campaignSaved)
 
 	campaignSaved.Started()
 	err = s.Repository.Update(campaignSaved)

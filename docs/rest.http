@@ -19,8 +19,8 @@ Authorization: Bearer {{access_token}}
 Content-Type: application/json 
 
 {
-    "Name": "Hello World",
-    "Content": "Hello World content",
+    "Name": "Hi there!",
+    "Content": "Hello World content 2",
     "emails": ["luis@teste.com", "jo@teste.com", "adele@teste.com", "agenciamartinidigital@gmail.com"],
     "createdBy": "luis@teste.com"
 }
